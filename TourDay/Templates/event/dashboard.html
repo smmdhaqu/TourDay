@@ -1,0 +1,235 @@
+{%extends 'layout.html'%} {% load static %}
+{%block og-details %}
+<meta name="og:title" content="TourDay" />
+<meta name="og:url" content="https://tourday.team" />
+<meta name="og:image" content="{% static 'image/tourday-og.png'%}" />
+{%endblock%}
+{%block title%}TourDay |
+Event{%endblock%} {%block css%}<link
+  rel="stylesheet"
+  href="{% static 'event/css/dashboard.css'%}"
+/>{%endblock%}{% block content %}
+<style>
+  #nav {
+    display: none;
+  }
+</style>
+<div class="root">
+  <input type="hidden" id="my-username" value="{{request.user.username}}" />
+  <div class="head">
+    <div>
+      <i class="material-icons">explore</i>
+      <h1>Events</h1>
+    </div>
+    <div id="add_event" data-toggle="modal" data-target=".add_event">
+      <h1>Create</h1>
+      <i class="material-icons">add_box</i>
+    </div>
+  </div>
+  <hr />
+  <div class="going">
+    <a href="#" data-toggle="modal" data-target=".going_event"
+      ><h5 align="center">
+        Going <span class="badge badge-secondary">{{going_events.count}}</span>
+      </h5></a
+    >
+    <a href="{% url 'all_event' %}" 
+    ><h5 align="center" style="font-size: 1rem;">
+      See All Events
+    </h5></a
+  >
+  </div>
+  <hr />
+  <div class="row my-3" id="root-div"></div>
+  <div id="post-loder">
+    <img src="{%static 'icon/loader.gif'%}" alt="Loading" />
+  </div>
+  <div class="mobile-hr" id="hr-hide-with-see-more"><hr></div>
+  <div id="see-more-div"><span id="see-more">See More</span></div>
+  <div class="mobile-hr"><hr></div>
+</div>
+
+<!-- Modal add event -->
+<div
+  class="modal add_event"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create Upcoming Event</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-9">
+                <label for="title" class="col-form-label">Title</label>
+                <input type="text" class="form-control" id="title" />
+              </div>
+              <div class="col-md-3">
+                <label for="capacity" class="col-form-label">Capacity</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="capacity"
+                  min="1"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4">
+                <label for="location" class="col-form-label">Location</label>
+                <input type="text" class="form-control" id="location" />
+              </div>
+
+              <div class="col-md-4">
+                <label for="date" class="col-form-label">Date</label>
+                <input type="date" class="form-control" id="date" required />
+              </div>
+              <div class="col-md-4">
+                <label for="location" class="col-form-label">Travel Cost</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cost"
+                  placeholder="&#2547; xxxx"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="col-form-label">Payment Method</label
+                ><select class="form-control" id="pay1_method">
+                  <option value="Bkash">Bkash</option>
+                  <option value="Rocket">Rocket</option>
+                  <option value="Nagad">Nagad</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="date" class="col-form-label">Account No</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="pay1"
+                  placeholder="01xxxxxxxxx"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="location" class="col-form-label"
+                  >Payment Method</label
+                ><select class="form-control" id="pay2_method">
+                  <option value="Bkash">Bkash</option>
+                  <option value="Rocket">Rocket</option>
+                  <option value="Nagad">Nagad</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="date" class="col-form-label">Account No</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="pay2"
+                  placeholder="01xxxxxxxxx"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="details" class="col-form-label">Decription</label>
+            <textarea
+              class="form-control"
+              id="details"
+              placeholder="write event description and Payment info"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="create-event" class="btn my-btn">
+          Create
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal add event  -->
+<!-- Modal going event list-->
+<div
+  class="modal going_event"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Going Event List</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% for event in going_events %}
+        <div class="card mb-2">
+          <a href="{%url 'event_page' id=event.id%}" class="link"
+            ><div class="card-body">
+              <div class="box-root">
+                <div>{{event.title}}</div>
+                <div>{{event.date}}</div>
+              </div>
+            </div></a
+          >
+        </div>
+        {%endfor%}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal add event  -->
+{%endblock%} {%block scripts%}
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"
+></script>
+<script src="{% static 'event/js-min/dashboard.js'%}"></script>
+{%endblock%}

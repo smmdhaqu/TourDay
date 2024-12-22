@@ -1,0 +1,199 @@
+{%extends 'layout.html'%} {% load static %}
+{%block og-details %}
+<meta name="og:title" content="TourDay" />
+<meta name="og:url" content="https://tourday.team" />
+<meta name="og:image" content="{% static 'image/tourday-og.png'%}" />
+{%endblock%}
+{%block title%}TourDay | Edit
+Profile{%endblock%} {%block css%}<link
+  rel="stylesheet"
+  href="{% static 'profile/css/profile.css'%}"
+/>
+<link rel="stylesheet" href="{% static 'css/croppie.css' %}" />
+{%endblock%} {% block content %}
+<div class="d-flex justify-content-between">
+  <h2 id="page-title" class="mt-4" style="margin-left: 1.5rem">Edit Profile</h2>
+  <span id="delete-ac" class="mt-4" >Delete Account</span>
+</div>
+
+<hr />
+
+<div class="profile">
+  <div class="picture-box">
+    <div style="position: relative">
+      <img id="pro_pic" src="{{profile.picture.url}}" alt="profile_picture" />
+      <div
+        class="edit_pic_text"
+        onclick="document.getElementById('selectedFile').click();"
+      >
+        <span>Change Picture</span>
+      </div>
+    </div>
+
+    <h2 align="center" class="mt-3" id="name_pic">
+      {%if profile.name%}{{profile.name}}{%endif%}
+    </h2>
+    <input type="file" id="selectedFile" style="display: none" />
+    <input
+      type="button"
+      value="Select Profile Picture"
+      class="my-btn mt-2"
+      id="image-btn"
+      onclick="document.getElementById('selectedFile').click();"
+    />
+  </div>
+  <div class="info-box">
+    {%if not is_complete %}
+    <div class="complete_notice">Complete your profile to access all pages</div>
+    {%endif%}
+    <div class="field">
+      <div class="field-text">
+        <b>Name:</b>
+        <span id="name">{%if profile.name%}{{profile.name}}{%endif%}</span
+        ><input
+          class="input-field"
+          id="input-name"
+          type="text"
+          placeholder="enter your full name"
+          value="{%if profile.name %}{{profile.name}}{%endif%}"
+          autocomplete="off"
+        />
+      </div>
+      <div class="field-edit" id="btn-name">Edit</div>
+    </div>
+
+    <div class="field">
+      <div class="field-text">
+        <b>Email:</b> <span id="email">{{profile.email}}</span>
+        <input
+          class="input-field"
+          id="input-email"
+          type="text"
+          placeholder="example@example.com"
+          value="{{user.email}}"
+          autocomplete="off"
+        />
+      </div>
+      <div class="field-edit" id="btn-email">Edit</div>
+    </div>
+
+    <div class="field">
+      <div
+        class="field-text pointer"
+        title="Enter only your facebook username.  &#013;Example: www.facebook.com/username"
+      >
+        <b>Facebook:</b>
+        <span id="fb">{%if profile.fb%}{{profile.fb}}{%endif%}</span>
+        <input
+          class="input-field"
+          id="input-fb"
+          type="text"
+          placeholder="enter facebook username only"
+          value="{%if profile.fb%}{{profile.fb}}{%endif%}"
+          autocomplete="off"
+        />
+      </div>
+      <div class="field-edit" id="btn-fb">Edit</div>
+    </div>
+    <div class="field">
+      <div
+        class="field-text pointer"
+        title="Enter only your Instagram username.  &#013;Example: www.instagramcom/username"
+      >
+        <b>Instagram:</b>
+        <span id="insta">{%if profile.insta%}{{profile.insta}}{%endif%}</span>
+        <input
+          class="input-field"
+          id="input-insta"
+          type="text"
+          placeholder="Enter only your Instagram username"
+          value="{%if profile.insta%}{{profile.insta}}{%endif%}"
+          autocomplete="off"
+        />
+      </div>
+      <div class="field-edit" id="btn-insta">Edit</div>
+    </div>
+
+    <div class="field">
+      <div class="field-text">
+        <b>Password:</b> <span id="password">********</span>
+        <input
+          class="input-field"
+          id="input-password"
+          type="password"
+          placeholder="must be 8 character"
+          autocomplete="off"
+        />
+      </div>
+      <div class="field-edit" id="btn-password">Edit</div>
+    </div>
+
+    <div class="field">
+      <div class="field-text">
+        <b>City:</b>
+        <span id="city">{%if profile.city%}{{profile.city}}{%endif%}</span>
+        <input
+          class="input-field"
+          id="input-city"
+          type="text"
+          placeholder="Dhaka, Bangladesh"
+          value="{%if profile.city%}{{profile.city}}{%endif%}"
+          autocomplete="off"
+        />
+      </div>
+      <div class="field-edit" id="btn-city">Edit</div>
+    </div>
+    <div class="field bio-field">
+      <div class="field-text pointer" title="Must be in 100 character.">
+        <b>Bio:</b>
+        <span id="bio">{%if profile.bio%}{{profile.bio}}{%endif%}</span>
+        <input
+          class="input-field"
+          id="input-bio"
+          type="text"
+          placeholder="Express yourself in 40 Characters"
+          value="{%if profile.bio%}{{profile.bio}}{%endif%}"
+          autocomplete="off"
+        />
+      </div>
+      <div class="field-edit" id="btn-bio">Edit</div>
+    </div>
+  </div>
+</div>
+
+<div id="uploadimageModal" class="modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Crop Image & Upload</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row" style="flex-direction: column">
+          <div class="">
+            <div
+              id="image_demo"
+              style="width: 100%; margin-top: 1rem; height: auto"
+            ></div>
+          </div>
+
+          <div
+            class=""
+            style="padding: 1rem 0; display: flex; justify-content: center"
+          >
+            <button class="my-btn crop_image">Upload Image</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%endblock%} {%block ads %} ads {%endblock%} {% block scripts %}
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js-min/croppie.js' %}"></script>
+<script src="{% static 'profile/js-min/profile.js'%}"></script>
+
+{%endblock%}

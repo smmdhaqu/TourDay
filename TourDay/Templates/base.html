@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="keywords"
+      content="Tourday, tour, blog, tour blog, DIU, TourDay"
+    />
+    <meta
+      name="description"
+      content="A platform where people can showcase their tours, share information, experiences & know more about tourist places in our Bangladesh."
+    />
+    <meta name="subject" content="Tourism & Tourist Community" />
+    <meta name="copyright" content="TourDay" />
+    <meta name="language" content="ES" />
+    <meta name="url" content="https://tourday.team" />
+    <meta name="identifier-URL" content="https://tourday.team" />
+
+    <meta name="og:title" content="TourDay" />
+    <meta name="og:url" content="https://tourday.team" />
+    <meta name="og:image" content="{% static 'image/tourday-og.png'%}" />
+    <meta
+      name="og:description"
+      content="A platform where people can showcase their tours, share information, experiences & know more about tourist places in our Bangladesh."
+    />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/base.css'%}" />
+    <link
+      rel="shortcut icon"
+      href="{% static 'image/tourday-fav.png'%}"
+      type="image/x-icon"
+    />
+
+    <style>
+      body {
+        /* overflow: hidden; */
+        font-family: "SolaimanLipi", "Poppins", Arial, sans-serif !important;
+      }
+    </style>
+
+
+  </head>
+  <body>
+    <div class="loader">
+      <img src="{% static 'image/loader.gif'%}" alt="Loading" />
+    </div>
+<div id="upper_loader" style="display: none;"></div>
+
+    <nav id="nav">
+      <ul class="menu">
+        {% if user.is_authenticated %}
+        <li>
+          <a href="{% url 'portfolio' user.username %}"
+            ><div style="display: flex; align-items: center">
+              {%if nav_img%}<img
+                src="{{nav_img}}"
+                width="20px"
+                height="20px"
+                style="border-radius: 50%; margin-right: 5px"
+              />{%endif%}{{user.username}}
+            </div>
+          </a>
+        </li>
+        {%endif%}
+        <li><a href="{% url 'search_page'%}">Search</a></li>
+        <li><a href="{% url 'blog_home'%}">Blog</a></li>
+        <li><a href="{%url 'store' %}">Shop</a></li>
+        {% if not user.is_authenticated %}
+        <li><a href="{% url 'login_page'%}">Login</a></li>
+        <li><a href="{% url 'signup_page'%}">Sign up</a></li>
+        {% else %}
+        <li><a href="{% url 'logout'%}">Logout</a></li>
+        {%endif%}
+      </ul>
+    </nav>
+
+    <div class="menu-mobile">
+      <ul>
+        {% if user.is_authenticated %}
+        <li>
+          <a href="{% url 'portfolio' user.username %}">{{user.username}}</a>
+        </li>
+        {%endif%}
+        <li><a href="{% url 'search_page'%}">Search</a></li>
+        <li><a href="{% url 'blog_home'%}">Blog</a></li>
+        <li><a href="{%url 'store' %}">Shop</a></li>
+        {% if not user.is_authenticated %}
+        <li><a href="{% url 'login_page'%}">Login</a></li>
+        <li><a href="{% url 'signup_page'%}">Sign up</a></li>
+        {% else %}
+        <li><a href="{% url 'logout'%}">Logout</a></li>
+        {%endif%}
+      </ul>
+    </div>
+
+    <div class="container">
+      <section>
+        <div class="left">
+          <!-- put left side content here -->
+        </div>
+        <div class="right">
+          <div class="form">{% block auth_template %} {% endblock %}</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="logo">
+      <a href="{% url 'search_page'%}">
+        <img src="{% static 'image/tourday-nav.png'%}" alt="logo"
+      /></a>
+    </div>
+
+    <!-- Mobile logo and menu bar start -->
+    <div class="mobile">
+      <div class="menu-icon addColor"><div class="hambargur"></div></div>
+      <div class="items" id="items"></div>
+    </div>
+
+    <!-- Mobile logo and menu bar end-->
+
+    <!-- error msg start-->
+    <div class="error" style="display: none">
+      <img src="{%static 'icon/close.svg'%}" id="close-error" alt="X" />
+      <h4 id="error-msg">Wrong Username or Password. Try again.</h4>
+    </div>
+    <!-- error msg  end-->
+  </body>
+  <script src="{% static 'js/jquery.js'%}"></script>
+  <script src="{% static 'js-min/base.js'%}"></script>
+  {% block scripts %}{%endblock%}
+</html>

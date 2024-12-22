@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Receipt</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+
+   <style>
+       
+
+       body {
+    
+            font-family: 'Poppins' !important;
+            
+        }
+
+       h4 {
+           padding-top: 7px;
+           font-size: 16px;
+       }
+       p {
+           font-size: 13px;
+       }
+       table {
+        width:100%;
+        }
+        
+        table, th, td {
+            
+            border-collapse: collapse;
+        }
+        th, td {
+            font-size: 13px;
+            padding: 2px;
+            text-align: left;
+        }
+        .row-image{
+            width: 80px;
+            height: 46px;
+            overflow: hidden; 
+            object-fit: contain;
+           
+        }
+        
+   </style>
+
+</head>
+<body>
+    
+        <img class="row-image" style="text-align: center;" src="https://www.tourday.team/static/image/tourday-nav.png" alt="" >
+    
+    <div>
+        <h4> <b style="color: green;"> Your order Received!</b></h4>
+
+        <p> <strong>Hello, {{order.customer.profile.name}}</strong> <br>
+            Your order has been Received and will be confirmed Shortly!
+        </p> 
+        <hr>
+        
+        <table style="width:100%">
+            <tr>
+                <th>Order Date</th>
+                <th>Order No</th>		
+                <th>Shiping Method</th>
+                <th>Shiping Address</th>
+            </tr>
+            <tr>
+                <td>{{order.date_ordered}}</td>
+                <td>{{order.order_id}}</td>	
+
+                <td>{{payment.method}}</td>
+
+                <td>{{shipping.address}}, {{shipping.state}}</td>
+            </tr>
+            
+            
+        </table>
+
+        <hr>
+
+        <table style="width:100%">
+            <tr>
+                <th>*</th>
+                <th>Product Name</th>		
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+            {% for item in oder_items %}
+            <tr>
+                <td><img class="row-image" src="https://www.tourday.team{{item.product.imageURL}}"></div></td>
+                <td>{{item.product.name}}</td>		
+                <td>{{item.quantity}}</td>
+                <td>BDT. {{item.product.price}}x{{item.quantity}}</td>
+            </tr>
+            {% endfor %}
+            
+            <hr>
+            
+        </table>
+        <hr>
+
+        <table>
+            <tr style="display: none;">
+                <th>*</th>
+                <th>Product Name</th>		
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+
+            <tr style="margin-left: 175px;">
+                <td style="margin-left: 190px;">Subtotal</td>
+                <td>BDT. {{order.total_money}}</td>
+            </tr>
+
+            <tr style="margin-left: 175px;">
+                <td style="margin-left: 190px;">Shipping</td>
+                <td>BDT. 0</td>
+            </tr>
+            <tr style="margin-left: 175px;">
+                <td style="margin-left: 190px;">Tax</td>
+                <td>BDT. 0</td>
+            </tr>
+            <tr style="margin-left: 175px;">
+                <td style="margin-left: 190px;">Discount</td>
+                <td>BDT. 0</td>
+            </tr>
+            
+        </table>
+        <hr>
+        <table>
+            <tr style="display: none;">
+                <th>*</th>
+                <th>Product Name</th>		
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+
+            <tr style="margin-left: 175px; color: red;">
+               
+                    <td style="margin-left: 190px;"> <strong>Subtotal</strong></td>
+                    <td><strong>BDT. {{order.total_money}}</strong></td>
+                
+            </tr>
+        </table>
+
+    </div>
+
+    <p style="margin-top: 100px;">We will be sending shipping confirmation email when the item shipped successfully!</p>
+    <p><strong>Thanks for shopping with us!</strong> <br> Tourday Team</p>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}{% load static %}
+{%block og-details %}
+<meta name="og:title" content="TourDay" />
+<meta name="og:url" content="https://tourday.team" />
+<meta name="og:image" content="{% static 'image/tourday-og.png'%}" />
+{%endblock%}
+{%block css%}<link
+  rel="stylesheet"
+  href="{% static 'blog/css/search.min.css'%}"
+/>{%endblock%} {% block title %}TourDay | A Platform for Bangladeshi Tourists{%endblock%} {% block search %}
+<style>
+  .left-menu,
+  .ads {
+    display: none;
+  }
+</style>
+
+<div class="main">
+  <img src="{% static 'image/tourday.png'%}" alt="TourDay" class="big-logo" />
+
+  <div class="input-box">
+    <img src="{% static 'icon/search.png'%}" alt="" class="input-icon" />
+    <input
+      class="input-text"
+      type="text"
+      id="q-field"
+      autocomplete="off"
+      placeholder="Explore your desire"
+    />
+  </div>
+  <div class="mb-2">
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="inlineRadioOptions"
+        id="inlineRadio1"
+        value="user"
+      />
+      <label class="form-check-label cursor-pointer" for="inlineRadio1">User</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="inlineRadioOptions"
+        id="inlineRadio2"
+        value="post"
+      />
+      <label class="form-check-label cursor-pointer" for="inlineRadio2">Blog</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="inlineRadioOptions"
+        id="inlineRadio3"
+        value="product"
+      />
+      <label class="form-check-label cursor-pointer" for="inlineRadio3">Product</label>
+    </div>
+  </div>
+  <button class="my-btn search-btn" type="submit" id="search">Search</button>
+</div>
+{%if is_andoird %}
+<footer><a href="{% url 'download_app'%}" class="download-btn" ><img src="{%static 'icon/android.png'%}"> Download Now</a></footer>
+{%endif%}
+{%endblock%} {%block scripts%}
+<script src="{% static 'blog/js/main.min.js' %}"></script>
+{%endblock%}
